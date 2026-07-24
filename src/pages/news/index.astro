@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsItem from '../../components/NewsItem.astro';
+
+const news = (await getCollection('news')).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+---
+
+<BaseLayout title="お知らせ">
+  <h1 class="mb-2 text-2xl font-bold text-gray-800">お知らせ</h1>
+  <p class="mb-6 text-sm text-gray-600">プレスリリース・製品情報・採用情報などをお届けします。</p>
+
+  <div class="border-t border-gray-100">
+    {news.map((entry) => <NewsItem entry={entry} />)}
+  </div>
+</BaseLayout>

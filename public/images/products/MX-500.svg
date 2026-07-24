@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450" role="img" aria-label="MX-500 placeholder">
+  <rect width="800" height="450" fill="#1a8a5b"/>
+  <rect x="24" y="24" width="752" height="402" fill="none" stroke="#ffffff" stroke-opacity="0.35" stroke-width="2"/>
+  <text x="400" y="210" font-family="sans-serif" font-size="88" font-weight="700" fill="#ffffff" text-anchor="middle">MX-500</text>
+  <text x="400" y="270" font-family="sans-serif" font-size="30" fill="#ffffff" fill-opacity="0.85" text-anchor="middle">計測器</text>
+  <text x="400" y="410" font-family="sans-serif" font-size="20" fill="#ffffff" fill-opacity="0.6" text-anchor="middle">SAKAE SEIKO — placeholder image</text>
+</svg>

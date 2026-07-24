@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate } from '../lib/format';
+
+export const getStaticPaths = (async () => {
+  const pages = await getCollection('pages');
+  return pages.map((page) => ({
+    params: { slug: page.id },
+    props: { page },
+  }));
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { title, updatedAt } = page.data;
+const { Content } = await render(page);
+---
+
+<BaseLayout title={title}>
+  <article>
+    <h1 class="text-2xl font-bold text-gray-800">{title}</h1>
+    <p class="mt-1 text-xs text-gray-400">最終更新：{formatDate(updatedAt)}</p>
+
+    <div class="prose mt-8 max-w-none border-t border-gray-100 pt-8">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatPrice } from '../lib/format';
+
+interface Props {
+  product: CollectionEntry<'products'>;
+}
+
+const { product } = Astro.props;
+const { title, category, model, price, discontinued, thumbnail } = product.data;
+---
+
+<a
+  href={`/products/${product.id}/`}
+  class="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md"
+>
+  <div class="relative aspect-video bg-gray-100">
+    <img src={thumbnail} alt={title} class="h-full w-full object-cover" loading="lazy" />
+    {
+      discontinued && (
+        <span class="absolute right-2 top-2 rounded bg-gray-700 px-2 py-0.5 text-xs font-medium text-white">
+          生産終了
+        </span>
+      )
+    }
+  </div>
+  <div class="flex flex-1 flex-col p-4">
+    <div class="flex items-center gap-2 text-xs text-gray-500">
+      <span class="rounded bg-[var(--brand)]/10 px-2 py-0.5 font-medium text-[var(--brand)]">
+        {category}
+      </span>
+      <span>{model}</span>
+    </div>
+    <h3 class="mt-2 flex-1 font-bold leading-snug text-gray-800 group-hover:text-[var(--brand)]">
+      {title}
+    </h3>
+    <p class="mt-2 text-sm font-semibold text-gray-700">{formatPrice(price)}<span class="ml-1 text-xs font-normal text-gray-400">（税抜）</span></p>
+  </div>
+</a>

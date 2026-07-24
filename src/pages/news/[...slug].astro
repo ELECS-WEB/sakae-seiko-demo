@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate } from '../../lib/format';
+
+export const getStaticPaths = (async () => {
+  const news = await getCollection('news');
+  return news.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { title, publishDate, category, important, author } = entry.data;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={title}>
+  <nav class="mb-6 text-sm text-gray-500">
+    <a href="/" class="hover:text-[var(--brand)]">ホーム</a>
+    <span class="mx-1">/</span>
+    <a href="/news/" class="hover:text-[var(--brand)]">お知らせ</a>
+  </nav>
+
+  <article>
+    <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+      <time>{formatDate(publishDate)}</time>
+      <span class="rounded bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">{category}</span>
+      {important && <span class="rounded bg-red-100 px-2 py-0.5 text-xs font-bold text-red-600">重要</span>}
+    </div>
+    <h1 class="mt-3 text-2xl font-bold leading-snug text-gray-800">{title}</h1>
+    <p class="mt-2 text-sm text-gray-500">{author}</p>
+
+    <div class="prose mt-8 max-w-none border-t border-gray-100 pt-8">
+      <Content />
+    </div>
+  </article>
+
+  <div class="mt-10">
+    <a href="/news/" class="text-sm text-[var(--brand)] hover:underline">← お知らせ一覧へ戻る</a>
+  </div>
+</BaseLayout>

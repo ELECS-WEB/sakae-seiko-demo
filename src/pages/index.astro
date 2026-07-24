@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import NewsItem from '../components/NewsItem.astro';
+
+const featured = (await getCollection('products'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime());
+
+const latestNews = (await getCollection('news'))
+  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout title="ホーム">
+  <!-- Hero -->
+  <section
+    class="mb-12 rounded-xl px-6 py-14 text-white sm:px-10 sm:py-20"
+    style="background: linear-gradient(135deg, var(--brand), var(--brand-dark));"
+  >
+    <p class="text-sm font-medium opacity-90">産業用センサー・計測機器メーカー</p>
+    <h1 class="mt-3 text-2xl font-bold leading-tight sm:text-4xl">
+      「測る」技術で、<br />ものづくりの現場を支える。
+    </h1>
+    <p class="mt-4 max-w-2xl text-sm leading-relaxed opacity-90 sm:text-base">
+      サカエ精工株式会社は、埼玉県さいたま市を拠点に、1978 年の創業以来センサー・計測器・制御機器を開発・製造しています。現場の「見える化」と自動化を、確かな品質でお届けします。
+    </p>
+    <a
+      href="/products/"
+      class="mt-6 inline-block rounded-md bg-white px-5 py-2.5 text-sm font-bold text-[var(--brand)] transition-opacity hover:opacity-90"
+    >
+      製品を見る →
+    </a>
+  </section>
+
+  <!-- Featured products -->
+  <section class="mb-14">
+    <div class="mb-5 flex items-baseline justify-between">
+      <h2 class="text-xl font-bold text-gray-800">製品ピックアップ</h2>
+      <a href="/products/" class="text-sm text-[var(--brand)] hover:underline">製品一覧 →</a>
+    </div>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {featured.map((product) => <ProductCard product={product} />)}
+    </div>
+  </section>
+
+  <!-- Latest news -->
+  <section>
+    <div class="mb-3 flex items-baseline justify-between">
+      <h2 class="text-xl font-bold text-gray-800">最新のお知らせ</h2>
+      <a href="/news/" class="text-sm text-[var(--brand)] hover:underline">お知らせ一覧 →</a>
+    </div>
+    <div>
+      {latestNews.map((entry) => <NewsItem entry={entry} />)}
+    </div>
+  </section>
+</BaseLayout>

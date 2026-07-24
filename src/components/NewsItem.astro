@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate } from '../lib/format';
+
+interface Props {
+  entry: CollectionEntry<'news'>;
+}
+
+const { entry } = Astro.props;
+const { title, publishDate, category, important } = entry.data;
+---
+
+<a
+  href={`/news/${entry.id}/`}
+  class="flex flex-col gap-1 border-b border-gray-100 py-4 transition-colors hover:bg-gray-50 sm:flex-row sm:items-center sm:gap-4"
+>
+  <time class="w-28 shrink-0 text-sm text-gray-500">{formatDate(publishDate)}</time>
+  <span class="w-24 shrink-0">
+    <span class="inline-block rounded bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+      {category}
+    </span>
+  </span>
+  <span class="flex-1 font-medium text-gray-800">
+    {important && <span class="mr-1 font-bold text-red-600">【重要】</span>}
+    {title}
+  </span>
+</a>
